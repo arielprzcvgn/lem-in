@@ -24,18 +24,23 @@
 typedef struct		s_env
 {
 	int		nb_ants;
-	char	**names;
+	t_names	**names;
 	int		**links;
 
 }					t_env;
 
+typedef struct		s_names
+{
+	int		id;
+	int		startend;
+	char	*name;
+	int		coord_x;
+	int		coord_y;
+}					t_names;
+
+
 /*
 **Initialisation (init.c)
-*/
-
-
-/*
-**Visualisation (visu.c)
 */
 
 
@@ -51,6 +56,7 @@ int					ft_atoi(const char *str);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strlen(const char *s);
 void				ft_strclr(char *s);
+char				*ft_strchr(const char *s, int c);
 char				*ft_strjoinfree(char *s1, char *s2, int frees1, int frees2);
 char				*ft_strnew(size_t size);
 char				*ft_strdup(const char *s1);
@@ -60,8 +66,8 @@ void				*ft_bzero(void *b, size_t len);
 void				*ft_memalloc(size_t size);
 void				*ft_memmove(void *dst, const void *src, size_t len);
 void				*ft_memset(void *b, int c, size_t len);
-int					get_next_line(const int fd, char **line);
 char				**ft_strsplit(char const *s, char c);
+int					get_next_line(const int fd, char **line);
 int					ft_printf(const char *format, ...);
 
 #endif
