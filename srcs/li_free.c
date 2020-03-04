@@ -48,7 +48,7 @@ int		free_tab(char **tab)
 	int		i;
 
 	i = 0;
-	while (tab[i])
+	while (tab[i] != NULL)
 	{
 		free(tab[i]);
 		i++;
@@ -61,10 +61,13 @@ int		error(t_env *e, char **inst, int err)
 {
 	if (err)
 		write(2, "Error\n", 6);
-	if (e && ((e->names && free_tab(e->names)) ||
-	(e->links && free_mat(e->links)) || 1))
+	if (e)
 		free(e);
 	if (inst)
-		free_tab(inst);
+	{
+		if (*inst)
+			free(*inst);
+		free(inst);
+	}
 	return (err);
 }

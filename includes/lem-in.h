@@ -21,22 +21,23 @@
 
 # define BUFF_SIZE 500
 
-typedef struct		s_env
-{
-	int		nb_ants;
-	t_names	**names;
-	int		**links;
-
-}					t_env;
-
 typedef struct		s_names
 {
 	int		id;
 	int		startend;
 	char	*name;
-	int		coord_x;
-	int		coord_y;
+	int		x;
+	int		y;
 }					t_names;
+
+typedef struct		s_env
+{
+	int		nb_ants;
+	t_names	*names;
+	int		**links;
+	int		nb_room;
+
+}					t_env;
 
 
 /*
@@ -47,6 +48,9 @@ typedef struct		s_names
 /*
 **Free functions (li_free.c)
 */
+int					free_mat(int **mat);
+int					free_tab(char **tab);
+int					error(t_env *e, char **inst, int err);
 
 
 /*
