@@ -32,7 +32,7 @@ char		*li_atoi(char *str, int *target, int stop)
 	}
 	nbr = neg * farfromint;
 	if (i == 0 || (str[i] != stop && (str[i] < '0' || '9' < str[i])) ||
-	nbr < 0 || nbr != neg * farfromint || i > 12)
+	nbr != neg * farfromint || i > 12)
 		return (NULL);
 	*target = nbr;
 	return (str + i);
@@ -85,6 +85,10 @@ void	print_links(t_env *e)
 		j = -1;
 		while (++j < e->nb_room)
 			ft_printf("  %i", e->links[i][j]);
+		if (e->names[i].startend == 1)
+			ft_printf("  END");
+		else if (e->names[i].startend == 2)
+			ft_printf("  START");
 		ft_printf("\n");
 	}
 }
@@ -109,8 +113,8 @@ int		fill_links(t_env *e, char **inst, int first)
 			if ((id_room1 = check_name(e, *inst)) == -1 ||
 			(id_room2 = check_name(e, dash + 1)) == -1)
 				break ;
-			e->links[id_room1][id_room2] = 1;
-			e->links[id_room2][id_room1] = 1;
+			e->links[id_room1][id_room2] = (id_room1 == id_room2 ? 0 : 1);
+			e->links[id_room2][id_room1] = (id_room1 == id_room2 ? 0 : 1);
 		}
 	}
 	return (1);
@@ -126,7 +130,7 @@ t_names		name_line(int c, int cmd, char *inst)
 	while (inst[i] && inst[i] != ' ')
 	{
 		if (inst[i] == '-')
-			n.id = -1;
+			n.id = -2;
 		i++;
 	}
 	inst[i] = '\0';
@@ -143,33 +147,42 @@ t_names		name_line(int c, int cmd, char *inst)
 int		fill_names(t_env *e, char **inst, int c, int cmd)
 {
 	t_names		n;
+	int			ok;
+	int			ret;
 
-	if (get_next_line(0, inst) == -1 || *inst == NULL || **inst == 'L' ||
-	(!ft_strcmp(*inst, "##end\n") && fill_names(e, inst, c, 2) == 0) ||
-	(!ft_strcmp(*inst, "##start\n") && fill_names(e, inst, c, 1) == 0) ||
-	(**inst == '#' && fill_names(e, inst, c, cmd)) ||
-	((n = name_line(c, cmd, *inst)).id != -1 && fill_names(e, inst, c + 1, 0) == 0))
-		;
+	ok = 1;
+	ret = 1;
+	if (((get_next_line(0, inst) == -1 || *inst == NULL || **inst == 'L') && !(ok = 0)) ||
+	(ok && !ft_strcmp(*inst, "##end\n") && (!fill_names(e, inst, c, 2) || (ok = 0))) ||
+	(ok && !ft_strcmp(*inst, "##start\n") && (!fill_names(e, inst, c, 1) || (ok = 0))) ||
+	(ok && **inst == '#' && (!fill_names(e, inst, c, cmd) || (ok = 0))) ||
+	(ok && !ft_strchr(*inst, ' ') && (ok = 0)) ||
+	(ok && (n = name_line(c, cmd, *inst)).id != -2 && (n.id == -1 || 
+	fill_names(e, inst, c + 1, 0) == 0)))
+		ret = 0;
 	if (!(e->names) && ((e->nb_room = c) || 1) && (cmd = 1) &&
 	!(e->names = malloc(sizeof(t_names) * c - 1)))
 		return (0);
-	if (!cmd)
+	if (ok)
 		e->names[c] = n;
-	return (1);
+	return (ret);
 }
 
 int		ants(t_env *e, char **inst)
 {
-	//COMMENTAIRE EN PREMIERE LIGNE
+	int		ok;
+
+	ok = 1;
 	if (get_next_line(0, inst) == -1 || *inst == NULL ||
-	li_atoi(*inst, &e->nb_ants, '\n') == 0 || e->nb_ants < 0)
+	(ok && **inst == '#' && (ants(e, inst) == 0 || (ok = 0))) || 
+	(ok && (li_atoi(*inst, &e->nb_ants, '\n') == 0 || e->nb_ants < 0)))
 		return (0);
 	return (1);
 }
 
 int		read_map(t_env *e, char **inst)
 {
-	e->nb_ants = 0;
+	e->nb_ants = -1;
 	e->nb_room = 0;
 	e->names = NULL;
 	e->links = NULL;

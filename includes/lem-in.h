@@ -36,7 +36,6 @@ typedef struct		s_env
 	t_names	*names;
 	int		**links;
 	int		nb_room;
-
 }					t_env;
 
 
