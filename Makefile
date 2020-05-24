@@ -1,59 +1,96 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ariperez <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/03/13 14:43:48 by ariperez          #+#    #+#              #
-#    Updated: 2020/01/06 19:17:46 by ariperez         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+#
+#	Variables
+#
 
-.PHONY: all clean fclean re main norme
+#	Path of source files
+SRC_PATH = sources
 
-NAME	=	lem-in
+#	!!!!!To change!!!!!!
+#	List of source files
+#	!!!!!!!!!!!!!!!!!!!!
+SRC_NAME = lem_in.c get_max_paths.c \
+initialize_in.c generate_matrix.c \
+get_paths.c pathfinder.c get_next_neighbor.c \
+ant_calculus.c \
+print_ants.c \
+env_to_in.c \
+parsing.c parse_fill.c parse_tools.c \
+li_free.c ari_get_next_line.c ft_strjoinfree.c \
+# get_test_case.c test_case_multi_paths.c \
 
-SRC_DIR =	./srcs
-LIB_DIR	=	./libft
+#	Source full name
+SRC = $(addprefix $(SRC_PATH)/, $(SRC_NAME))
 
-INC_NAME=	lem-in.h libftprintf.h get_next_line.h
-NAME_SRC=	lem-in.c init.c visu.c li_free.c
-NAME_LIB=	ft_atoi.c ft_memcpy.c ft_putchar.c ft_strcmp.c ft_strnew.c speci_c.c speci_s.c\
-			ft_bzero.c ft_memmove.c ft_putstr.c ft_strcpy.c ft_strsplit.c speci_d_i.c speci_u.c\
-			ft_conv_base.c ft_memset.c ft_putstr_fd.c ft_strdup.c get_next_line.c speci_f.c speci_x.c\
-			ft_itoa.c ft_power.c ft_strcat.c ft_strjoinfree.c pfparsing.c speci_o.c\
-			ft_memalloc.c ft_printf.c ft_strclr.c ft_strlen.c pftools.c speci_p.c ft_strchr.c
+#	Path of object files
+OBJ_PATH = objects
 
-SRC		=	$(addprefix $(SRC_DIR)/, $(NAME_SRC))
-LIB		=	$(addprefix $(LIB_DIR)/, $(NAME_LIB))
-OBJ		=	$(SRC:.c=.o)
-OBJ_LIB	=	$(LIB:.c=.o)
+#	Get objects names from source files
+OBJ_NAME = $(SRC_NAME:.c=.o)
 
-CC		=	gcc
-FLAGS	=	-Wall -Wextra -Werror
+#	Object full name
+OBJ = $(addprefix $(OBJ_PATH)/, $(OBJ_NAME))
+
+#	!!!!!To change!!!!
+#	Include files path
+#	!!!!!!!!!!!!!!!!!!
+INC = includes/
+
+#	Include files path flag
+CPPFLAGS = -Iincludes
+
+#	Uncomment if you want to compile libft
+LIB_PATH = libft
+
+#	Lib file path flag
+LDFLAGS = -Llibft
+
+#	-lft represents libft.a
+LDLIBS = -lft
+
+#	Compilator
+CC = gcc
+
+#	Compilator options
+CFLAGS = -g -Werror -Wall -Wextra
+
+#	!!!!!To change!!!!!!
+#	Output name
+#	!!!!!!!!!!!!!!!!!!!!
+NAME = lem-in
+
+#
+#	Rules
+#
+
+.PHONY: all, clean, fclean, re, norm
 
 all: $(NAME)
 
-$(NAME): $(OBJ_LIB) $(OBJ)
-	@$(CC) $(FLAGS) $(OBJ) $(OBJ_LIB) -o $(NAME)
-	@echo "\033[1;32mLem-in is ready.\033[0m"
+#	$^ is $(OBJ)
+#	$@ is $(NAME)
+# 	Uncomment "@cd $(LIB_PATH) && $(MAKE)" if you want to compile lib
+$(NAME): $(OBJ)
+	@cd $(LIB_PATH) && $(MAKE)
+	$(CC) $^ $(LDFLAGS) $(LDLIBS) -o $@
+	$(CC) -g $^ $(LDFLAGS) $(LDLIBS) -o debug
+
+#	2> /dev/null || true is to avoid errors and messages if folder already exists
+#	$< is first dependance ($(SRC_PATH)%.c)
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+	@mkdir $(OBJ_PATH) 2> /dev/null || true
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
 clean:
-	@rm -f $(OBJ) $(OBJ_LIB)
-	@echo "\033[1;31mObject files has been deleted.\033[0m"
+	rm -fv $(OBJ)
+	@rmdir $(OBJ_PATH) 2> /dev/null || true
+	$(MAKE) -C $(LIB_PATH) clean
 
 fclean: clean
-	@rm -f $(NAME)
-	@rm -f debug
-	@echo "\033[1;31mLem-in has been deleted.\033[0m"
+	rm -fv $(NAME) debug
+	$(MAKE) -C $(LIB_PATH) fclean
 
 re: fclean all
 
-norme:
-	@echo "\033[1;33mNorminette\033[0m"
-	@norminette $(INC) $(SRC) $(LIB)
-
-debug:
-	@$(CC) -g $(FLAGS) $(SRC) $(LIB) -o debug
-	@echo "\033[1;32mLem-in debug is ready.\033[0m"
+norm:
+	norminette $(SRC)
+	norminette $(INC)
