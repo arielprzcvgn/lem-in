@@ -50,13 +50,34 @@ int		readline(int fd, char *buf, int *red, char **copy)
 			i++;
 		end = buf[i];
 		buf[i] = '\0';
-		*copy = ft_strjoinfree(*copy, buf, 1, 0);
-		end == '\n' ? *copy = ft_strjoinfree(*copy, "\n", 1, 0) : 0;
+		*copy = ft_strjoinfree(*copy, buf, end, 1);
 		if (end == '\n')
 			ft_memmove(buf, (buf + i + 1), *red - i);
 		end == '\n' ? ft_strclr(buf + *red - i - 1) : ft_strclr(buf);
-		if (end != '\n' && (*red = read(fd, buf, BUFF_SIZE)) == 0)
+		if (end != '\n' && (*red = read(fd, buf, BUFF_SIZE)) == 0 &&
+						(*copy = ft_strjoinfree(*copy, "\n", 0, 1)))
 			return (1);
+	}
+	return (1);
+}
+
+int		free_file(t_fd **file)
+{
+	t_fd	*to_free;
+	t_fd	*begin;
+
+	begin = *file;
+	while (*file)
+	{
+		to_free = *file;
+		if (to_free->buf)
+		{
+			free(to_free->buf);
+			to_free->buf = NULL;
+		}
+		*file = ((*file)->next != begin) ? (*file)->next : NULL;
+		free(to_free);
+		to_free = NULL;
 	}
 	return (1);
 }
@@ -67,10 +88,12 @@ int		ari_get_next_line(const int fd, char **line)
 	char			*copy;
 	int				ret;
 
+	if (fd == -1)
+		return (free_file(&file));
 	if (!file)
 	{
 		if (!(file = malloc(sizeof(t_fd))) ||
-			!(file->buf = ft_strnew(BUFF_SIZE)))
+			!(file->buf = ft_strnew(BUFF_SIZE + 1)))
 			return (-1);
 		file->fd = (size_t)fd;
 		file->red = 0;
@@ -81,6 +104,5 @@ int		ari_get_next_line(const int fd, char **line)
 		return (-1);
 	ret = readline((int)file->fd, file->buf, &file->red, &copy);
 	*line = copy;
-	ft_printf("%s", *line);
 	return (ret);
 }

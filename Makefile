@@ -8,15 +8,10 @@ SRC_PATH = sources
 #	!!!!!To change!!!!!!
 #	List of source files
 #	!!!!!!!!!!!!!!!!!!!!
-SRC_NAME = lem_in.c get_max_paths.c \
-initialize_in.c generate_matrix.c \
-get_paths.c pathfinder.c get_next_neighbor.c \
-ant_calculus.c \
-print_ants.c \
-env_to_in.c \
-parsing.c parse_fill.c parse_tools.c \
-li_free.c ari_get_next_line.c ft_strjoinfree.c \
-# get_test_case.c test_case_multi_paths.c \
+SRC_NAME = lem_in.c \
+parsing.c parse_fill.c parse_tools.c li_free.c \
+ari_get_next_line.c \
+pathsfinder.c suurballe.c print_result.c
 
 #	Source full name
 SRC = $(addprefix $(SRC_PATH)/, $(SRC_NAME))
@@ -39,13 +34,13 @@ INC = includes/
 CPPFLAGS = -Iincludes
 
 #	Uncomment if you want to compile libft
-LIB_PATH = libft
+LIB_PATH = mylibft
 
 #	Lib file path flag
 LDFLAGS = -Llibft
 
 #	-lft represents libft.a
-LDLIBS = -lft
+LDLIBS = libft.a
 
 #	Compilator
 CC = gcc
@@ -71,6 +66,7 @@ all: $(NAME)
 # 	Uncomment "@cd $(LIB_PATH) && $(MAKE)" if you want to compile lib
 $(NAME): $(OBJ)
 	@cd $(LIB_PATH) && $(MAKE)
+	@mv $(LIB_PATH)/libft.a .
 	$(CC) $^ $(LDFLAGS) $(LDLIBS) -o $@
 	$(CC) -g $^ $(LDFLAGS) $(LDLIBS) -o debug
 

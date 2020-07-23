@@ -12,74 +12,80 @@
 
 #include "../includes/lem_in.h"
 
-/*char	**copy_tab(char **tab, char **argv, int argc, int i)
-{
-	int		j;
-
-	j = 0;
-	if ((tab = malloc(sizeof(*tab) * (argc - i + 1))) == NULL)
-		return (NULL);
-	while (i + j < argc)
-	{
-		if ((tab[j] = ft_strdup(argv[i + j])) == NULL)
-			return (NULL);
-		j++;
-	}
-	tab[j] = NULL;
-	return (tab);
-}
-*/
-
 int		free_mat(int **mat, int nb_room)
 {
 	int		i;
 
 	i = 0;
-	while (i <= nb_room)
+	while (i < nb_room)
 	{
 		free(mat[i]);
+		mat[i] = NULL;
 		i++;
 	}
 	free(mat);
+	mat = NULL;
 	return (1);
 }
 
-int		free_tab(t_names **tab, int nb_room)
+int		free_room_list(t_room **mem, int max, int room)
 {
+	t_room	*f;
 	int		i;
 
-	i = 0;
-	while (i <= nb_room)
+	i = -1;
+	while (++i < max)
 	{
-		free(tab[i]);
-		i++;
+		while (mem[i])
+		{
+			f = mem[i];
+			mem[i] = mem[i]->next;
+			if (room && f->name)
+				free(f->name);
+			f->name = NULL;
+			free(f);
+			f = NULL;
+		}
 	}
-	free(tab);
+	if (!room)
+		free(mem);
 	return (1);
 }
 
-int		error(t_env **e, char **inst, int err)
+int		free_inst(char **inst)
+{
+	if (*inst)
+	{
+		free(*inst);
+		*inst = NULL;
+	}
+	free(inst);
+	return (1);
+}
+
+int		li_free(t_in **e, char **inst, int err)
 {
 	if (err)
 		write(2, "Error\n", 6);
-	if (*e)
+	if (e && *e)
 	{
-		if ((*e)->names)
-			free_tab((*e)->names, (*e)->nb_room);
-		if ((*e)->links)
-			free_mat((*e)->links, (*e)->nb_room);
+		if ((*e)->room)
+			free_room_list(&(*e)->room, 1, 1);
+		if ((*e)->matrix)
+			free_mat((*e)->matrix, (*e)->room_count);
+		if ((*e)->oriented)
+			free_mat((*e)->oriented, ((*e)->room_count - 1) * 2);
+		if ((*e)->best)
+			free_room_list((*e)->best, (*e)->max_best, 0);
+		if ((*e)->ants)
+			free((*e)->ants);
+		if ((*e)->map_buf)
+			free((*e)->map_buf);
 		free(*e);
 		*e = NULL;
 	}
-	if (inst)
-	{
-		if (*inst)
-		{	
-			free(*inst);
-			*inst = NULL;
-		}
-		free(inst);
+	if (inst && free_inst(inst))
 		inst = NULL;
-	}
+	ari_get_next_line(-1, NULL);
 	return (err);
 }
