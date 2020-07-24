@@ -56,16 +56,16 @@ void	print_oriented(t_in *e)
 
 	i = -1;
 	ft_printf("\n                ");
-	while (++i < (e->room_count - 1) * 2)
+	while (++i < (e->nb_room - 1) * 2)
 		ft_printf("[%3i]", i);
 	ft_printf("\n");
 	i = -1;
 	current = e->room;
-	while (++i < (e->room_count - 1) * 2)
+	while (++i < (e->nb_room - 1) * 2)
 	{
 		ft_printf("%8.10s [%3i]:", current->name, i);
 		j = -1;
-		while (++j < (e->room_count - 1) * 2)
+		while (++j < (e->nb_room - 1) * 2)
 			ft_printf("  %3i", e->oriented[i][j]);
 		if (i == 0)
 			ft_printf("  START");
@@ -83,23 +83,23 @@ int		init_oriented(t_in *in)
 	int		j;
 
 	i = -1;
-	if (!(in->oriented = malloc(sizeof(int*) * (in->room_count - 1) * 2)))
+	if (!(in->oriented = malloc(sizeof(int*) * (in->nb_room - 1) * 2)))
 		return (0);
-	while (++i < (in->room_count - 1) * 2)
+	while (++i < (in->nb_room - 1) * 2)
 	{
-		if (!(in->oriented[i] = malloc(sizeof(int*) * (in->room_count - 1) * 2)))
+		if (!(in->oriented[i] = malloc(sizeof(int*) * (in->nb_room - 1) * 2)))
 			return (0);
 		j = -1;
-		while (++j < (in->room_count - 1) * 2)
+		while (++j < (in->nb_room - 1) * 2)
 			in->oriented[i][j] = 0;
 	}
 	i = -1;
-	while (++i < in->room_count - 1)
+	while (++i < in->nb_room - 1)
 	{
 		j = 0;
-		while (++j < in->room_count &&
+		while (++j < in->nb_room &&
 					((in->oriented[i * 2][j * 2 - 1] = in->matrix[i][j]) || 1))
-			if (j + 1 < in->room_count)
+			if (j + 1 < in->nb_room)
 				in->oriented[i * 2 + 1][i * 2 + 2] = 1;
 	}
 	return (1);
@@ -113,8 +113,8 @@ int		pathsfinder(t_in *in)
 
 	if ((i = -1) && !init_oriented(in))
 		return (0);
-	while (++i < in->room_count && (j = -1))
-		while (++j < in->room_count)
+	while (++i < in->nb_room && (j = -1))
+		while (++j < in->nb_room)
 			in->matrix[i][j] = 0;
 	in->max_paths = 0;
 	while (oriented_bfs(in))

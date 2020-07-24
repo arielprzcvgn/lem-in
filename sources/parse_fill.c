@@ -32,16 +32,16 @@ int		init_links(t_in *e)
 	int		j;
 
 	i = -1;
-	if (!(e->matrix = malloc(sizeof(int*) * (e->room_count))))
+	if (!(e->matrix = malloc(sizeof(int*) * (e->nb_room))))
 		return (0);
-	while (++i < e->room_count)
-		if (!(e->matrix[i] = malloc(sizeof(int*) * (e->room_count))))
+	while (++i < e->nb_room)
+		if (!(e->matrix[i] = malloc(sizeof(int*) * (e->nb_room))))
 			return (0);
 	i = -1;
-	while (++i < e->room_count)
+	while (++i < e->nb_room)
 	{
 		j = -1;
-		while (++j < e->room_count)
+		while (++j < e->nb_room)
 			e->matrix[i][j] = 0;
 	}
 	return (1);
@@ -53,7 +53,7 @@ int		fill_links(t_in *e, char **inst, t_room *mem)
 	int		id_room1;
 	int		id_room2;
 
-	if (e->room_count == 0 && !clean_room_list(e, mem))
+	if (e->nb_room == 0 && !clean_room_list(e, mem))
 		return (0);
 	if (e->matrix == NULL && !init_links(e))
 		return (0);

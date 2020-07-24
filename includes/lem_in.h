@@ -16,12 +16,9 @@
 # include "../libft/includes/libft.h"
 
 /*
-**	for open //TODO remove before final push
+**	for open //BONUS pour lire 
 */
 # include <fcntl.h>
-
-# define FLAGS O_RDONLY
-# define PATHNAME "map"
 
 # define INF 0x7FFFFFFF
 
@@ -57,7 +54,7 @@ typedef struct		s_in
 	int				fd;
 	char			*map_buf;
 	int				ant_size;
-	int				room_count;
+	int				nb_room;
 	t_room			*room;
 	t_room			*start_room;
 	t_room			*end_room;
@@ -73,51 +70,51 @@ typedef struct		s_in
 /*
 **	parsing.c
 */
-t_in			*parsing(char *pathname);
-void			print_links(t_in *e);
+t_in				*parsing(char *pathname);
+void				print_links(t_in *e);
 
 /*
 **	parse_tools.c
 */
-t_room			*li_lstnew(void);
-char			*get_name(char *str);
-char			*li_atoi(char *str, int *target, int stop);
-int				clean_room_list(t_in *e, t_room *mem);
-char			*ft_strstopchr(char *s, int c, int stop);
+t_room				*li_lstnew(void);
+char				*get_name(char *str);
+char				*li_atoi(char *str, int *target, int stop);
+int					clean_room_list(t_in *e, t_room *mem);
+char				*ft_strstopchr(char *s, int c, int stop);
 
 /*
 **	parse_fill.c
 */
-int				fill_links(t_in *e, char **inst, t_room *mem);
-int				fill_names(t_in *e, char **inst, t_room **mem);
+int					fill_links(t_in *e, char **inst, t_room *mem);
+int					fill_names(t_in *e, char **inst, t_room **mem);
 
 /*
 **	li_free.c
 */
-int				free_room_list(t_room **mem, int max, int room);
-int				li_free(t_in **e, char **inst, int err);
+int					free_room_list(t_room **mem, int max, int room);
+int					li_free(t_in **e, char **inst, int err);
 
 /*
 **	pathsfinder.c
 */
-int				pathsfinder(t_in *in);
-t_room			*li_lstcpy(t_room *dst);
-void			print_oriented(t_in *e);
-void			print_path(t_in *in);
+int					pathsfinder(t_in *in);
+t_room				*li_lstcpy(t_room *dst);
+void				print_oriented(t_in *e);
+void				print_path(t_in *in);
 
 /*
 **	suurballe.c
 */
-t_queue			*free_queue(t_queue *q);
-t_queue			*add_queue(int in, int score, t_queue *next);
-int				oriented_bfs(t_in *in);
+t_queue				*free_queue(t_queue *q);
+t_queue				*add_queue(int in, int score, t_queue *next);
+int					oriented_bfs(t_in *in);
 
 /*
 **	print_result.c
 */
-void			order_path(t_in *in);
-void			init_ant(t_in *in, t_ant *ants);
-int				simple_bfs(t_in *in);
-int				print_ant(t_in *in);
+void				order_path(t_in *in);
+void				init_ant(t_in *in, t_ant *ants);
+int					simple_bfs(t_in *in);
+int					print_ant(t_in *in);
 
 #endif

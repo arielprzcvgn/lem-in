@@ -19,7 +19,8 @@ int		put_c(t_printf *p, char *s)
 	p->a.zeros = (p->a.p & ZERO && !(p->a.p & MINUS)) ? p->a.width - 1 : 0;
 	p->a.str = 1;
 	p->a.space = (!(p->a.p & ZERO) || p->a.p & MINUS) ? p->a.width - 1 : 0;
-	total = MAX(p->a.zeros + p->a.str + p->a.space, p->a.str);
+	total = p->a.zeros + p->a.str + p->a.space;
+	total = (total < p->a.str ? p->a.str : total);
 	while (!(p->a.p & (MINUS | ZERO)) && 0 < p->a.space--)
 		write(1, " ", 1);
 	while (p->a.p & (!MINUS | ZERO) && 0 < p->a.zeros--)

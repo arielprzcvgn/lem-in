@@ -95,12 +95,12 @@ char	*li_atoi(char *str, int *target, int stop)
 
 int		clean_room_list(t_in *e, t_room *mem)
 {
-	if ((e->room_count = mem->id + 2) == 1 || !e->end_room ||
+	if ((e->nb_room = mem->id + 2) == 1 || !e->end_room ||
 	e->end_room->id == -1 || !e->start_room || e->start_room->id == -1)
 		return (0);
 	e->start_room->id = 0;
 	e->start_room->score = 0;
-	e->end_room->id = e->room_count - 1;
+	e->end_room->id = e->nb_room - 1;
 	mem = e->room;
 	while (mem)
 	{

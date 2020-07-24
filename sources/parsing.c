@@ -35,16 +35,16 @@ void	print_links(t_in *e)
 
 	i = -1;
 	ft_printf("\n                  ");
-	while (++i < e->room_count)
+	while (++i < e->nb_room)
 		ft_printf("[%3i]", i);
 	ft_printf("\n");
 	i = -1;
 	current = e->room;
-	while (++i < e->room_count)
+	while (++i < e->nb_room)
 	{
 		ft_printf("%10.10s [%3i]:", current->name, i);
 		j = -1;
-		while (++j < e->room_count)
+		while (++j < e->nb_room)
 			ft_printf("  %3i", e->matrix[i][j]);
 		if (i == 0)
 			ft_printf("  START");
@@ -126,7 +126,7 @@ t_in	*parsing(char *pathname)
 	e->ant_size = -1;
 	e->start_room = NULL;
 	e->end_room = NULL;
-	e->room_count = 0;
+	e->nb_room = 0;
 	e->matrix = NULL;
 	e->oriented = NULL;
 	e->max_paths = 0;
@@ -134,8 +134,9 @@ t_in	*parsing(char *pathname)
 	e->max_best = 0;
 	e->best = NULL;
 	e->ants = NULL;
-	e->fd = (pathname) ? open(pathname, FLAGS) : STDIN_FILENO;
-	if (read_map(e, inst) == 0)
+	e->fd = (pathname) ? open(pathname, O_RDONLY) : STDIN_FILENO;
+	ft_printf("HAHAHAHA %i\n", e->fd);
+	if (e->fd < 0 || read_map(e, inst) == 0)
 		li_free(&e, inst, 1);
 	else
 		li_free(NULL, inst, 0);

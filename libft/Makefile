@@ -49,10 +49,10 @@ GNL_D	=	gnl
 GNL_N	=	get_next_line.c
 
 PRINT_D	=	ft_printf
-PRINT_N	=	ft_printf.c parsing.c tools.c speci_d_i.c speci_o.c speci_s.c \
-			speci_x.c speci_c.c speci_p.c speci_u.c speci_f.c
+PRINT_N	=	ft_printf.c printf_parsing.c printf_tools.c speci_d_i.c speci_o.c \
+			speci_s.c speci_x.c speci_c.c speci_p.c speci_u.c speci_f.c
 
-INC_NAME=   libft.h libftprintf.h get_next_line.h
+INC_NAME=   libft.h libftprintf.h
 SRC_NAME=	$(MEM_N) $(CHAR_N) $(LST_N) $(MATH_N) $(PUT_N) $(STR_N) $(GNL_N) $(PRINT_N)
 OBJ_NAME=   $(SRC_NAME:.c=.o)
 
@@ -86,5 +86,5 @@ fclean:	clean
 re:		fclean all
 
 norme:
-	@echo "\033[1;33mNorminette\033[0m"
-	@norminette -R CheckForbiddenSourceHeader $(SRC)
+	@echo "\033[1;33mNorminette Libft\033[0m"
+	@norminette $(INC) $(SRC)

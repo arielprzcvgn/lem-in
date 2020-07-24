@@ -36,6 +36,10 @@ void	order_path(t_in *in)
 	}
 }
 
+/*
+** ft_printf("NBR LINE : %i\n", turn + 1); TO ADD LINE 59 FOR SCRIPT
+*/
+
 int		print_ant(t_in *in)
 {
 	int		i;
@@ -53,7 +57,6 @@ int		print_ant(t_in *in)
 		}
 		ft_printf("\n");
 	}
-	ft_printf("NBR LINE : %i\n", turn + 1);
 	return (1);
 }
 
@@ -116,7 +119,7 @@ t_queue	*add_room(t_in *in, int room_to, t_queue *q, t_queue *end_visit)
 	in->path[i]->next->score = in->path[i]->score + 1;
 	in->path[i]->next->previous = in->path[i];
 	in->path[i] = in->path[i]->next;
-	if (in->path[i]->id == in->room_count - 1 && (len = in->path[i]->score))
+	if (in->path[i]->id == in->nb_room - 1 && (len = in->path[i]->score))
 	{
 		while (in->path[i]->previous != NULL)
 			in->path[i] = in->path[i]->previous;
@@ -142,7 +145,7 @@ int		simple_bfs(t_in *in)
 	endq = q;
 	while (q && (j = -1))
 	{
-		while (++j < in->room_count)
+		while (++j < in->nb_room)
 			if (in->matrix[q->in][j] == 1 && !(endq = add_room(in, j, q, endq)))
 				return (0);
 		tmp = q;

@@ -83,6 +83,8 @@ char	*parse(t_printf *p)
 			p->format++;
 		if (0 <= i && i <= 14 && (p->a.p |= 1 << i))
 			p->format++;
+		p->a.space = 0;
+		p->a.zeros = 0;
 	}
 	return (specifier(p));
 }

@@ -72,9 +72,9 @@ int		li_free(t_in **e, char **inst, int err)
 		if ((*e)->room)
 			free_room_list(&(*e)->room, 1, 1);
 		if ((*e)->matrix)
-			free_mat((*e)->matrix, (*e)->room_count);
+			free_mat((*e)->matrix, (*e)->nb_room);
 		if ((*e)->oriented)
-			free_mat((*e)->oriented, ((*e)->room_count - 1) * 2);
+			free_mat((*e)->oriented, ((*e)->nb_room - 1) * 2);
 		if ((*e)->best)
 			free_room_list((*e)->best, (*e)->max_best, 0);
 		if ((*e)->ants)

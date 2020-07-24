@@ -16,19 +16,17 @@ int		main(int argc, char **argv)
 {
 	t_in	*in;
 
-	if (argc == 2)
+	if (argc == 1)
+		in = parsing(NULL);
+	else if (argc == 2)
 		in = parsing(argv[1]);
 	else
-		in = parsing(NULL);
-	if (in == NULL)
-	{
-		//sleep(3);
 		return (0);
-	}
+	if (in == NULL)
+		return (0);
 	ft_printf("%s\n", in->map_buf);
 	if (!pathsfinder(in) && li_free(&in, NULL, 0))
 		return (0);
 	li_free(&in, NULL, 0);
-	//sleep(3);
 	return (1);
 }

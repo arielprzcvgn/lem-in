@@ -43,11 +43,11 @@ void	retrace_path(t_in *in, int room)
 	int		tmp;
 	int		prev;
 
-	in->oriented[(in->room_count - 1) * 2 - 1][room] = -1;
-	in->oriented[room][(in->room_count - 1) * 2 - 1] = 0;
-	in->matrix[room / 2][in->room_count - 1] = 1;
-	in->matrix[in->room_count - 1][room / 2] = -1;
-	prev = (in->room_count - 1) * 2 - 1;
+	in->oriented[(in->nb_room - 1) * 2 - 1][room] = -1;
+	in->oriented[room][(in->nb_room - 1) * 2 - 1] = 0;
+	in->matrix[room / 2][in->nb_room - 1] = 1;
+	in->matrix[in->nb_room - 1][room / 2] = -1;
+	prev = (in->nb_room - 1) * 2 - 1;
 	while (room)
 	{
 		tmp = (in->oriented[room][0] < 0 ? 0 : in->oriented[room][0]);
@@ -63,7 +63,7 @@ void	retrace_path(t_in *in, int room)
 		room = (in->oriented[room][0] < 0 ? 0 : in->oriented[room][0]);
 	}
 	tmp = 0;
-	while (++tmp < (in->room_count - 1) * 2)
+	while (++tmp < (in->nb_room - 1) * 2)
 		in->oriented[tmp][0] = (in->oriented[tmp][0] == -1 ? -1 : 0);
 }
 
@@ -73,7 +73,7 @@ t_queue	*explore_room(t_in *in, t_queue **to_visit, t_queue *tmp)
 	t_queue		*end_visit;
 
 	j = 0;
-	while (++j <= (in->room_count - 2) * 2)
+	while (++j <= (in->nb_room - 2) * 2)
 	{
 		if ((in->oriented[(*to_visit)->in][j] == 1 ||
 			in->oriented[(*to_visit)->in][j] == -1) && in->oriented[j][0] == 0)
@@ -104,7 +104,7 @@ int		oriented_bfs(t_in *in)
 		return (0);
 	while (to_visit)
 	{
-		if (in->oriented[to_visit->in][(in->room_count - 1) * 2 - 1])
+		if (in->oriented[to_visit->in][(in->nb_room - 1) * 2 - 1])
 		{
 			retrace_path(in, to_visit->in);
 			free_queue(to_visit);

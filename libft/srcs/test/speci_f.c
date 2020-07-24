@@ -32,19 +32,18 @@ int		speci_f(t_printf *p)
 {
 	long double		f;
 
-	f = 0;
 	if (p->a.p & LLL)
 		f = (long double)(va_arg(p->ap, long double));
 	else
 		f = (double)(va_arg(p->ap, double));
-	if (p->a.precision == -1)
-		p->a.precision = 6;
+	p->a.precision = (p->a.precision == -1 ? 6 : p->a.precision);
 	if (f == f)
 		p->a.str = ftoa_printf(f, p);
 	else
 		ft_memcpy(p->buffer + p->c, "nan", (p->a.str = 3));
 	p->a.p & APOS ? apostrophe(p) : 0;
-	p->a.space = MAX(p->a.width - p->a.str, 0);
+	p->a.space = p->a.width - p->a.str;
+	p->a.space = (p->a.space < 0 ? 0 : p->a.space);
 	if (p->a.p & MINUS)
 		ft_memset(p->buffer + p->c + p->a.str, ' ', p->a.space);
 	else
@@ -66,10 +65,10 @@ int		ftoa_printf(long double n, t_printf *p)
 	i = (n < 0) ? '-' : i;
 	p->a.sign = (p->a.p & PLUS || p->a.p & SPACE || n < 0) ? 1 : 0;
 	ft_memset(p->buffer + p->c, i, p->a.sign);
-	number = ft_ulltoa((unsigned long long)ABS(n));
+	number = ft_ulltoa((unsigned long long)(n < 0 ? -n : n));
 	i = p->a.sign + ft_strlen(number);
 	ft_memcpy(p->buffer + p->c + p->a.sign, number, i - p->a.sign);
-	n += (n < 0 ? 1 : -1) * (long double)(unsigned long)(ABS(n));
+	n += (n < 0 ? 1 : -1) * (long double)(unsigned long)(n < 0 ? -n : n);
 	n += (p->a.precision > 10) ? 0 : arrondi(n, p);
 	if (p->a.p & HASH || p->a.precision > 0)
 		p->buffer[p->c + i++] = '.';
