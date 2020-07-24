@@ -16,31 +16,6 @@
 # include "../libft/includes/libft.h"
 
 /*
-**  for read and write
-*/
-# include <unistd.h>
-
-/*
-**  for malloc and free
-*/
-# include <stdlib.h>
-
-/*
-**  for perror
-*/
-# include <stdio.h>
-
-/*
-**  for strerror
-*/
-# include <string.h>
-
-/*
-**  for exit
-*/
-# include <stdlib.h>
-
-/*
 **	for open //TODO remove before final push
 */
 # include <fcntl.h>
