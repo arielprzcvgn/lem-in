@@ -86,6 +86,6 @@ int		li_free(t_in **e, char **inst, int err)
 	}
 	if (inst && free_inst(inst))
 		inst = NULL;
-	ari_get_next_line(-1, NULL);
+	get_next_line(-1, NULL);
 	return (err);
 }

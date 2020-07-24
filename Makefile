@@ -1,92 +1,56 @@
-#
-#	Variables
-#
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ariperez <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/03/13 14:43:48 by ariperez          #+#    #+#              #
+#    Updated: 2020/01/06 19:17:46 by ariperez         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-#	Path of source files
-SRC_PATH = sources
+.PHONY: all clean fclean re main norme
 
-#	!!!!!To change!!!!!!
-#	List of source files
-#	!!!!!!!!!!!!!!!!!!!!
-SRC_NAME = lem_in.c \
-parsing.c parse_fill.c parse_tools.c li_free.c \
-ari_get_next_line.c \
-pathsfinder.c suurballe.c print_result.c
+NAME	=	lem_in
 
-#	Source full name
-SRC = $(addprefix $(SRC_PATH)/, $(SRC_NAME))
+SRC_DIR =	./sources
+INC_DIR =	./includes
+LIB_DIR	=	./libft
 
-#	Path of object files
-OBJ_PATH = objects
+INC_NAME=	lem_in.h
+SRC_NAME=	lem_in.c pathsfinder.c suurballe.c print_result.c \
+			parsing.c parse_fill.c parse_tools.c li_free.c
+LIB_NAME=	libft.a
 
-#	Get objects names from source files
-OBJ_NAME = $(SRC_NAME:.c=.o)
+INC		=	$(addprefix $(INC_DIR)/, $(INC_NAME))
+SRC		=	$(addprefix $(SRC_DIR)/, $(SRC_NAME))
+OBJ		=	$(SRC:.c=.o)
+LIB		=	$(addprefix $(LIB_DIR)/, $(LIB_NAME))
 
-#	Object full name
-OBJ = $(addprefix $(OBJ_PATH)/, $(OBJ_NAME))
-
-#	!!!!!To change!!!!
-#	Include files path
-#	!!!!!!!!!!!!!!!!!!
-INC = includes/
-
-#	Include files path flag
-CPPFLAGS = -Iincludes
-
-#	Uncomment if you want to compile libft
-LIB_PATH = mylibft
-
-#	Lib file path flag
-LDFLAGS = -Llibft
-
-#	-lft represents libft.a
-LDLIBS = libft.a
-
-#	Compilator
-CC = gcc
-
-#	Compilator options
-CFLAGS = -g -Werror -Wall -Wextra
-
-#	!!!!!To change!!!!!!
-#	Output name
-#	!!!!!!!!!!!!!!!!!!!!
-NAME = lem-in
-
-#
-#	Rules
-#
-
-.PHONY: all, clean, fclean, re, norm
+CC		=	gcc
+FLAGS	=	-g -Wall -Wextra -Werror
 
 all: $(NAME)
 
-#	$^ is $(OBJ)
-#	$@ is $(NAME)
-# 	Uncomment "@cd $(LIB_PATH) && $(MAKE)" if you want to compile lib
 $(NAME): $(OBJ)
-	@cd $(LIB_PATH) && $(MAKE)
-	@mv $(LIB_PATH)/libft.a .
-	$(CC) $^ $(LDFLAGS) $(LDLIBS) -o $@
-	$(CC) -g $^ $(LDFLAGS) $(LDLIBS) -o debug
-
-#	2> /dev/null || true is to avoid errors and messages if folder already exists
-#	$< is first dependance ($(SRC_PATH)%.c)
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
-	@mkdir $(OBJ_PATH) 2> /dev/null || true
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+	$(MAKE) -C $(LIB_DIR)
+	@$(CC) $(FLAGS) $(OBJ) $(LIB) -o $(NAME)
+	@echo "\033[1;32mLem_in is ready.\033[0m"
 
 clean:
-	rm -fv $(OBJ)
-	@rmdir $(OBJ_PATH) 2> /dev/null || true
-	$(MAKE) -C $(LIB_PATH) clean
+	@rm -f $(OBJ) $(LIB)
+	$(MAKE) -C $(LIB_DIR) clean
+	@echo "\033[1;31mObject files and libft has been deleted.\033[0m"
 
 fclean: clean
-	rm -fv $(NAME) debug
-	$(MAKE) -C $(LIB_PATH) fclean
+	@rm -f $(NAME)
+	$(MAKE) -C $(LIB_DIR) fclean
+	@echo "\033[1;31mLem_in has been deleted.\033[0m"
 
 re: fclean all
 
-norm:
-	norminette $(SRC)
-	norminette $(INC)
+norme:
+	@echo "\033[1;33mNorminette\033[0m"
+	@norminette $(INC) $(SRC)
+	$(MAKE) -C $(LIB_DIR) fclean

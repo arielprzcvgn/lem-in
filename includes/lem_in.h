@@ -145,13 +145,4 @@ void			init_ant(t_in *in, t_ant *ants);
 int				simple_bfs(t_in *in);
 int				print_ant(t_in *in);
 
-/*
-**	ari_get_next_line.c
-*/
-int				ari_get_next_line(const int fd, char **line);
-
-/*
-**	ft_strjoinfree.c
-*/
-char			*ft_strjoinfree(char *s1, char *s2, char bonus, int tofree);
 #endif

@@ -19,7 +19,7 @@ void	print_map(int fd, char **inst)
 		free(*inst);
 		*inst = NULL;
 	}
-	while (ari_get_next_line(fd, inst) == 1 && *inst != NULL)
+	while (get_next_line(fd, inst) == 1 && *inst != NULL)
 	{
 		ft_printf("%s", *inst);
 		free(*inst);
@@ -86,7 +86,7 @@ int		read_map(t_in *e, char **inst)
 	t_room	*mem;
 
 	mem = e->room;
-	while (ari_get_next_line(e->fd, inst) == 1 && *inst != NULL)
+	while (get_next_line(e->fd, inst) == 1 && *inst != NULL)
 	{
 		if (*inst[0] == '#' &&
 		ft_strcmp(*inst, "##start\n") && ft_strcmp(*inst, "##end\n"))
