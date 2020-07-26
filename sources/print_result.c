@@ -12,30 +12,6 @@
 
 #include "../includes/lem_in.h"
 
-void	order_path(t_in *in)
-{
-	int		order;
-	int		i;
-	t_room	*tmp;
-
-	order = 1;
-	while (order)
-	{
-		order = 0;
-		i = -1;
-		while (++i < in->max_paths - 1)
-		{
-			if (in->path[i]->score > in->path[i + 1]->score)
-			{
-				tmp = in->path[i];
-				in->path[i] = in->path[i + 1];
-				in->path[i + 1] = tmp;
-				order = 1;
-			}
-		}
-	}
-}
-
 /*
 ** ft_printf("NBR LINE : %i\n", turn + 1); TO ADD LINE 59 FOR SCRIPT
 */

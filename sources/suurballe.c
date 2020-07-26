@@ -12,32 +12,6 @@
 
 #include "../includes/lem_in.h"
 
-t_queue	*free_queue(t_queue *q)
-{
-	t_queue	*tmp;
-
-	while (q)
-	{
-		tmp = q;
-		q = q->next;
-		free(tmp);
-		tmp = NULL;
-	}
-	return (NULL);
-}
-
-t_queue	*add_queue(int in, int score, t_queue *next)
-{
-	t_queue	*to_visit;
-
-	if ((to_visit = malloc(sizeof(t_queue))) == NULL)
-		return (NULL);
-	to_visit->in = in;
-	to_visit->score = score;
-	to_visit->next = next;
-	return (to_visit);
-}
-
 void	retrace_path(t_in *in, int room)
 {
 	int		tmp;

@@ -20,7 +20,7 @@ LIB_DIR	=	./libft
 OBJ_DIR	=	./objects
 
 INC_NAME=	lem_in.h
-SRC_NAME=	lem_in.c pathsfinder.c suurballe.c print_result.c \
+SRC_NAME=	lem_in.c pathsfinder.c suurballe.c print_result.c algo_tools.c \
 			parsing.c parse_fill.c parse_tools.c li_free.c
 LIB_NAME=	libft.a
 OBJ_NAME=	$(SRC_NAME:.c=.o)
@@ -42,6 +42,7 @@ $(NAME): $(OBJ)
 	@echo "\033[1;32mLem_in is ready.\033[0m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
 	$(CC) $(DEBUG) $(CFLAGS) -o $@ -c $<
 
 clean:
@@ -51,12 +52,13 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
+	@rm -rf lem_in.dSYM
 	@$(MAKE) -C $(LIB_DIR) fclean
 	@echo "\033[1;31mLem_in has been deleted.\033[0m"
 
 re: fclean all
 
 norme:
-	#@$(MAKE) -C $(LIB_DIR) norme
+	@$(MAKE) -C $(LIB_DIR) norme
 	@echo "\033[1;33mNorminette Lem_in\033[0m"
 	@norminette $(INC) $(SRC)

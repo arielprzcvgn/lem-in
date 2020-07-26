@@ -21,7 +21,10 @@ int		main(int argc, char **argv)
 	else if (argc == 2)
 		in = parsing(argv[1]);
 	else
+	{
+		write(2, "Error\n", 6);
 		return (0);
+	}
 	if (in == NULL)
 		return (0);
 	ft_printf("%s\n", in->map_buf);

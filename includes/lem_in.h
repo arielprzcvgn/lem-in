@@ -16,7 +16,7 @@
 # include "../libft/includes/libft.h"
 
 /*
-**	for open //BONUS pour lire 
+**	for open //BONUS pour lire depuis un fichier
 */
 # include <fcntl.h>
 
@@ -99,22 +99,26 @@ int					li_free(t_in **e, char **inst, int err);
 */
 int					pathsfinder(t_in *in);
 t_room				*li_lstcpy(t_room *dst);
-void				print_oriented(t_in *e);
-void				print_path(t_in *in);
 
 /*
 **	suurballe.c
 */
-t_queue				*free_queue(t_queue *q);
-t_queue				*add_queue(int in, int score, t_queue *next);
 int					oriented_bfs(t_in *in);
 
 /*
 **	print_result.c
 */
-void				order_path(t_in *in);
 void				init_ant(t_in *in, t_ant *ants);
 int					simple_bfs(t_in *in);
 int					print_ant(t_in *in);
+
+/*
+**	algo_tools.c
+*/
+t_queue				*free_queue(t_queue *q);
+t_queue				*add_queue(int in, int score, t_queue *next);
+void				order_path(t_in *in);
+void				print_oriented(t_in *e);
+void				print_path(t_in *in);
 
 #endif

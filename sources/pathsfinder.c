@@ -29,54 +29,6 @@ t_room	*li_lstcpy(t_room *dst)
 	return (new);
 }
 
-void	print_path(t_in *in)
-{
-	int		i;
-	t_room	*tmp;
-
-	i = -1;
-	while (++i < in->max_paths)
-	{
-		tmp = in->path[i];
-		ft_printf("PATH NB : %i  len:%i  =>  ", i, tmp->score);
-		while (tmp)
-		{
-			ft_printf("%i : %s /// ", tmp->id, tmp->name);
-			tmp = tmp->next;
-		}
-		ft_printf("\n");
-	}
-}
-
-void	print_oriented(t_in *e)
-{
-	int		i;
-	int		j;
-	t_room	*current;
-
-	i = -1;
-	ft_printf("\n                ");
-	while (++i < (e->nb_room - 1) * 2)
-		ft_printf("[%3i]", i);
-	ft_printf("\n");
-	i = -1;
-	current = e->room;
-	while (++i < (e->nb_room - 1) * 2)
-	{
-		ft_printf("%8.10s [%3i]:", current->name, i);
-		j = -1;
-		while (++j < (e->nb_room - 1) * 2)
-			ft_printf("  %3i", e->oriented[i][j]);
-		if (i == 0)
-			ft_printf("  START");
-		else if (e->end_room->id * 2 - 1 == i)
-			ft_printf("  END");
-		ft_printf("\n");
-		if (i % 2 == 0)
-			current = current->next;
-	}
-}
-
 int		init_oriented(t_in *in)
 {
 	int		i;
@@ -129,6 +81,6 @@ int		pathsfinder(t_in *in)
 	}
 	if (in->max_paths && print_ant(in))
 		return (1);
-	ft_printf("No path found\n");
+	write(2, "NO PATH FOUND\n", 14);
 	return (0);
 }

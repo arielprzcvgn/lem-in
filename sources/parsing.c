@@ -81,11 +81,8 @@ int		add_to_buf(char **inst, char **buf)
 	return (1);
 }
 
-int		read_map(t_in *e, char **inst)
+int		read_map(t_in *e, char **inst, t_room *mem)
 {
-	t_room	*mem;
-
-	mem = e->room;
 	while (get_next_line(e->fd, inst) == 1 && *inst != NULL)
 	{
 		if (*inst[0] == '#' &&
@@ -123,20 +120,19 @@ t_in	*parsing(char *pathname)
 	!(e->room = li_lstnew()) ||
 	!(e->map_buf = ft_memalloc(BUFF_SIZE)))
 		return (0);
+	*inst = 0;
 	e->ant_size = -1;
 	e->start_room = NULL;
 	e->end_room = NULL;
 	e->nb_room = 0;
 	e->matrix = NULL;
 	e->oriented = NULL;
-	e->max_paths = 0;
 	e->path = NULL;
 	e->max_best = 0;
 	e->best = NULL;
 	e->ants = NULL;
 	e->fd = (pathname) ? open(pathname, O_RDONLY) : STDIN_FILENO;
-	ft_printf("HAHAHAHA %i\n", e->fd);
-	if (e->fd < 0 || read_map(e, inst) == 0)
+	if (e->fd < 0 || read_map(e, inst, e->room) == 0)
 		li_free(&e, inst, 1);
 	else
 		li_free(NULL, inst, 0);
