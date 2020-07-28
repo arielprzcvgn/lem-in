@@ -12,10 +12,6 @@
 
 #include "../includes/lem_in.h"
 
-/*
-** ft_printf("NBR LINE : %i\n", turn + 1); TO ADD LINE 59 FOR SCRIPT
-*/
-
 int		print_ant(t_in *in)
 {
 	int		i;

@@ -73,6 +73,7 @@ $(NAME): $(OBJ)
 	@echo "\033[1;32mYour library is ready.\033[0m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:

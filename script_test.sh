@@ -57,7 +57,9 @@ if [ $MAP != "0" ]; then
 	read -e -p "How many times ? " REPETITION
 	echo -e "\n\033[33mMAP NAME : $MAP\033[37m\n"
 	if [ $REPETITION -eq 1 ]; then
-		time ./generator $MAP | $LEMIN
+		./generator $MAP > $DIR$LAST_DIR$REPETITION
+		time $LEMIN $DIR$LAST_DIR$REPETITION
+		$LEMIN $DIR$LAST_DIR$REPETITION | grep ^L | wc -l
 		#./generator $MAP | $LEMIN | leaks lem-in;
 	elif [ $REPETITION -gt 1 ]; then
 		rm -rf maps/last
@@ -68,7 +70,7 @@ if [ $MAP != "0" ]; then
 			./generator $MAP > $DIR$LAST_DIR$REPETITION
 			head $DIR$LAST_DIR$REPETITION | grep "lines required" | cut -d ' ' -f 6-8 | tr '\n' ' '
 			echo -e "   lem_in: \c"
-			time $LEMIN $DIR$LAST_DIR$REPETITION | grep "NBR LINE" | cut -d ' ' -f 4
+			time $LEMIN $DIR$LAST_DIR$REPETITION | grep ^L | wc -l
 			let "REPETITION = REPETITION - 1"
 			sleep 1
 		done
